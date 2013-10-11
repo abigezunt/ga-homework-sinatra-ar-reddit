@@ -1,0 +1,31 @@
+ <div class="header-box">
+   <div class="inline-title"><a href="/index/">Discuss Everything</a></div> | 
+   <a href="/new"><div class="inline">create a new category</div></a> | 
+   <a href="/newest"><div class="inline">read all the newest posts</div></a>
+ </div>
+
+ <% @submissions.each_with_index do |newslink, index| %>
+  <div class="post">
+  <div class="title"><%=(index+1)%>.  <a href="<%=submission.link%>"><%= submission.title %></a></div>
+
+  <div class="info">
+  
+  <% points = (submission.up_votes - submission.down_votes) + submission.comments.length %> <%=points%> points | created at <%=submission.created_at%> | 
+  <a href="/r/<%= submission.id %>"><%=submission.comments.length %> COMMENTS</a> | 
+  <a href="/r/<%= submission.id %>/edit">EDIT</a> | 
+  <a href="/r/<%= submission.id %>/delete">DELETE</a> |
+  <a href="/r/<%= submission.id %>/flag">FLAG POST</a>
+  </div>
+  
+  <div class="voting">  
+    <form action="/r/<%= newslink.id %>/up_vote" method="post">
+      <button name="up_votes" type="submit" value=1>Up Vote</button>
+    </form>
+
+    <form action="/r/<%= newslink.id %>/down_vote" method="post">
+    <button name="down_votes" type="submit" value=1>Down Vote</button>
+    </form>
+  </div>
+</div>
+
+<% end %>
