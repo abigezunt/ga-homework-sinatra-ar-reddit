@@ -1,9 +1,17 @@
-<!--  <div class="header-box">
-   <div class="inline-title"><a href="/index/">Discuss Everything</a></div> | 
-   <a href="/new"><div class="inline">create a new category</div></a> | 
-   <a href="/newest"><div class="inline">read all the newest posts</div></a>
- </div>
- -->
+<div class="add-new-post-box">
+  <h2>Create a new post:</h2>
+    <form action="/r/<%=@category_title%>/new" method="post">
+      Title: <input type="text" name="title">
+      <select name="post type">
+      <option value="link">URL</option>
+      <option value="body">Text</option>
+      </select>
+      Your post:<input type="text" name="post">
+      <button type="submit">Submit</button>
+    </form>
+</div>
+
+
  <% @submissions.each_with_index do |submission, index| %>
   <div class="post">
   <div class="title"><%=(index+1)%>.  <a href="<%=submission.link%>"><%= submission.title %></a></div>
@@ -11,18 +19,18 @@
   <div class="info">
   
   <% points = (submission.up_votes - submission.down_votes) + submission.comments.length %> <%=points%> points | created at <%=submission.created_at%> | 
-  <a href="/r/<%= @category %>/<%= submission.id %>"><%=submission.comments.length %> COMMENTS</a> | 
-  <a href="/r/<%= @category %>/<%= submission.id %>/edit">EDIT</a> | 
-  <a href="/r/<%= @category %>/<%= submission.id %>/delete">DELETE</a> |
-  <a href="/r/<%= @category %>/<%= submission.id %>/flag">FLAG POST</a>
+  <a href="/r/<%= @category_title %>/<%= submission.id %>"><%=submission.comments.length %> COMMENTS</a> | 
+  <a href="/r/<%= @category_title %>/<%= submission.id %>/edit">EDIT</a> | 
+  <a href="/r/<%= @category_title %>/<%= submission.id %>/delete">DELETE</a> |
+  <a href="/r/<%= @category_title %>/<%= submission.id %>/flag">FLAG POST</a>
   </div>
   
   <div class="voting">  
-    <form action="/r/<%= @category %>/<%= submission.id %>/up_vote" method="post">
+    <form action="/r/<%= @category_title %>/<%= submission.id %>/up_vote" method="post">
       <button name="up_votes" type="submit" value=1>Up Vote</button>
     </form>
 
-    <form action="/r/<%= @category %>/<%= submission.id %>/down_vote" method="post">
+    <form action="/r/<%= @category_title %>/<%= submission.id %>/down_vote" method="post">
     <button name="down_votes" type="submit" value=1>Down Vote</button>
     </form>
   </div>

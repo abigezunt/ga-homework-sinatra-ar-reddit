@@ -1,4 +1,4 @@
-<%= @category %>
+<h2><%= @category_title %></h2>
 
 <div class= "body">
 <a href="<%=@submission.link%>"><div><h2><%=@submission.title%></h2></div></a>
@@ -8,14 +8,14 @@
 <div><p><%= comment.body %></p></div>
 <div><p>posted by <%= comment.author %> on <%= comment.created_at %> | 
        <%= comment.up_votes - comment.down_votes %> points | 
-  <a href="/r/@category_id/<%= @submission.id %>/<%= comment.id %>/edit-comment">EDIT</a> | 
-  <form action="/r/@category_id/<%= @submission.id %>/<%= comment.id %>/delete-comment" method="post"><button type="submit">DELETE</button></form> |
+  <a href="/r/@category_title/<%= @submission.id %>/<%= comment.id %>/edit-comment">EDIT</a> | 
+  <form action="/r/@category_title/<%= @submission.id %>/<%= comment.id %>/delete-comment" method="post"><button type="submit">DELETE</button></form> |
   </p></div>
 <% end %>
 
 <div class="add-new-comment-box">
   <h2>Add a comment:</h2>
-    <form action="/r/@category_id/<%= @submission.id%>/add-comment" method="post">
+    <form action="/r/@category_title/<%= @submission.id%>/add-comment" method="post">
       <div>Your name: <input type="text" name="author" ></div>
       <div>Your comment: <input type="text" name="body" ></div>
       <button type="submit">Add your comment</button>
