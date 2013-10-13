@@ -66,11 +66,11 @@ post '/r/:category_title/new' do
   redirect "/r/#{params[:category_title]}/index"
 end
 
-post '/r/:category_title/delete-category' do
-  category_id = Category.where(title: params[:category_title]).first.id
-  Category.delete(category_id)
-  redirect '/all-categories'
-end
+# post '/r/:category_title/delete-category' do
+#   category_id = Category.where(title: params[:category_title]).first.id
+#   Category.delete(category_id)
+#   redirect '/all-categories'
+# end
 
 
 get '/r/:category_title/:submission_id/comments' do
@@ -78,6 +78,11 @@ get '/r/:category_title/:submission_id/comments' do
   @category = Category.where(title: params[:category_title]).first
   @category_title = params[:category_title]
   erb :show_post
+end
+
+post '/r/:category_title/:submission_id/delete' do
+  Submission.delete(params[:submission_id])
+  redirect "/r/#{params[:category_title]}/index"
 end
 
 post '/r/:category_title/:submission_id/up_vote' do

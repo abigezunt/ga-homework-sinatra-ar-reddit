@@ -2,11 +2,20 @@
 
  <% @submissions.each_with_index do |submission, index| %>
  <% @category_title = Category.find(submission.category_id).title %>
+ 
+ <% if submission.link %>
+ <%   path = submission.link %>
+ <% elsif submission.body %>
+ <%   path = "/r/#{@category_title}/#{submission.id}/comments" %>
+ <% else %>
+ <%   path = "/index/" %>
+ <% end %>
+
   <div class="post">
-  <div class="title"><%=(index+1)%>.  <a href="<%=submission.link%>"><%= submission.title %></a> posted in <a href="/r/<%= @category_title %>/index"><%= @category_title %></a></div>
+  <div class="title"><%=(index+1)%>.  <a href="<%=path%>"><%= submission.title %></a> posted in <a href="/r/<%= @category_title %>/index"><%= @category_title %></a></div>
 
   <div class="info">
-  
+
   <% points = (submission.up_votes - submission.down_votes) + submission.comments.length %> <%=points%> points | created at <%=submission.created_at%> | 
   <a href="/r/<%= @category_title %>/<%= submission.id %>/comments"><%=submission.comments.length %> COMMENTS</a> | 
   <a href="/r/<%= @category_title %>/<%= submission.id %>/edit">EDIT</a> | 
