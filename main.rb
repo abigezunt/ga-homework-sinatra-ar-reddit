@@ -26,6 +26,7 @@ end
 
 
 get '/index/' do
+  @category_name = "Everything"
   @submissions = Submission.order("(up_votes - down_votes) DESC")
   erb :index
 end
@@ -44,8 +45,35 @@ get '/newest' do
   erb :index
 end
 
-get '/r/:category' do
+get '/r/:category/index' do
   category = Category.where(title: params[:category]).first
+  @category = params[:category]
   @submissions = category.submissions
   erb :index
 end
+
+get '/r/:category_id/:submission_id/comments' do
+  @submission = Submission.find(params[:submission_id])
+  @category_id = params[:category_id]
+  @category_title = Category.find(params[:category_id]).title
+  erb :show_post.erb
+end
+
+post '/r/:category_id/:submission_id/add-comment' do
+  Comment.create(author: params[:author], body: params[:body], submission_id: params[:submission_id])
+  redirect "/r/#{params[:category_id]}/#{params[:submission_id]}/comments"
+end
+
+get '/r/:category_id/:submission_id/:comment_id/edit-comment' do
+  @comment = Comment.find(params[:comment_id])
+  erb :edit_comment
+end
+
+post '/r/:category_id/:submission_id/:comment_id/delete-comment' do
+  Comment.delete(params[:comment_id])
+  redirect "/r/#{params[:category_id]}/#{params[:submission_id]}/comments"
+end
+
+
+
+

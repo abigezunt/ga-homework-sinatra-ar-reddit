@@ -11,18 +11,18 @@
   <div class="info">
   
   <% points = (submission.up_votes - submission.down_votes) + submission.comments.length %> <%=points%> points | created at <%=submission.created_at%> | 
-  <a href="/r/<%= submission.category_id%>/<%= submission.id %>/comments"><%=submission.comments.length %> COMMENTS</a> | 
-  <a href="/r/<%= submission.category_id%>/<%= submission.id %>/edit">EDIT</a> | 
-  <a href="/r/<%= submission.category_id%>/<%= submission.id %>/delete">DELETE</a> |
-  <a href="/r/<%= submission.category_id%>/<%= submission.id %>/flag">FLAG POST</a>
+  <a href="/r/<%= @category %>/<%= submission.id %>"><%=submission.comments.length %> COMMENTS</a> | 
+  <a href="/r/<%= @category %>/<%= submission.id %>/edit">EDIT</a> | 
+  <a href="/r/<%= @category %>/<%= submission.id %>/delete">DELETE</a> |
+  <a href="/r/<%= @category %>/<%= submission.id %>/flag">FLAG POST</a>
   </div>
   
   <div class="voting">  
-    <form action="/r/<%= newslink.id %>/up_vote" method="post">
+    <form action="/r/<%= @category %>/<%= submission.id %>/up_vote" method="post">
       <button name="up_votes" type="submit" value=1>Up Vote</button>
     </form>
 
-    <form action="/r/<%= newslink.id %>/down_vote" method="post">
+    <form action="/r/<%= @category %>/<%= submission.id %>/down_vote" method="post">
     <button name="down_votes" type="submit" value=1>Down Vote</button>
     </form>
   </div>
