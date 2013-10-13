@@ -28,7 +28,7 @@
 
   <div class="info">
   
-  <% points = (submission.up_votes - submission.down_votes) + submission.comments.length %> <%=points%> points | created at <%=submission.created_at%> | 
+  <% points = ((submission.up_votes - submission.down_votes) + submission.comments.length) %> <%=points%> points | created at <%=submission.created_at%> | 
   <a href="/r/<%= @category_title %>/<%= submission.id %>/comments"><%=submission.comments.length %> COMMENTS</a> | 
   <a href="/r/<%= @category_title %>/<%= submission.id %>/edit">EDIT</a> | 
   <form action="/r/<%= @category_title %>/<%= submission.id %>/delete" method="post"><button type="submit">DELETE</button></form>

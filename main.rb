@@ -145,7 +145,6 @@ post '/:category_title/:submission_id/:comment_id/update-comment' do
   redirect "/r/#{params[:category_title]}/#{params[:submission_id]}/comments"
 end
 
-
 post '/r/:category_title/:submission_id/:comment_id/delete-comment' do
   Comment.delete(params[:comment_id])
   redirect "/r/#{params[:category_title]}/#{params[:submission_id]}/comments"
