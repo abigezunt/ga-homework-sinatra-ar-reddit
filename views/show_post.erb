@@ -1,16 +1,32 @@
 <h2><%= @category_title %></h2>
 
+ <% if @submission.link %>
+ <%   path = @submission.link %>
+ <% elsif @submission.body %>
+ <%   path = "/r/#{@category_title}/#{@submission.id}/comments" %>
+ <% else %>
+ <%   path = "/index/" %>
+ <% end %>
+
 <div class= "body">
-<a href="<%=@submission.link%>"><div><h2><%=@submission.title%></h2></div></a>
+<a href="<%=path%>"><div><h2><%=@submission.title%></h2></div></a>
 <div><p><%=@submission.body %></p></div></div>
 
-<% @submission.comments.each do |comment| %>
-<div><p><%= comment.body %></p></div>
-<div><p>posted by <%= comment.author %> on <%= comment.created_at %> | 
+<% @comments.each do |comment| %>
+<p><%= comment.body %></p>
+<p>posted by <%= comment.author %> on <%= comment.created_at %> | 
        <%= comment.up_votes - comment.down_votes %> points | 
   <a href="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/edit-comment">EDIT</a> | 
-  <form action="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/delete-comment" method="post"><button type="submit">DELETE</button></form> |
-  </p></div>
+  <a href="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/add-comment">COMMENT</a> 
+  <form action="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/delete-comment" method="post"><button type="submit">DELETE</button></form> 
+    <form action="/r/<%= @category_title %>/<%= @submission.id %>/<%= comment.id %>/up_vote" method="post">
+      <button name="up_votes" type="submit" value=1>Up Vote</button>
+    </form>
+
+    <form action="/r/<%= @category_title %>/<%= @submission.id %>/<%= comment.id %>/down_vote" method="post">
+    <button name="down_votes" type="submit" value=1>Down Vote</button>
+    </form>
+  </p>
 <% end %>
 
 <div class="add-new-comment-box">

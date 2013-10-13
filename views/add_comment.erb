@@ -1,0 +1,13 @@
+<h1><%= @submission.title %></h1>
+
+<div><%=@parent_comment.body%></div> 
+<div>posted by <%=@parent_comment.author%> on <%=@parent_comment.created_at%>.</div>
+
+<div class="add-new-comment-box">
+  <h2>Add a comment:</h2>
+    <form action="/r/<%= @category_title %>/<%= @submission.id%>/<%=@parent_comment.id%>/add-comment" method="post">
+      <div>Your name: <input type="text" name="author" ></div>
+      <div>Your comment: <input type="text" name="body" ></div>
+      <button type="submit">Add your comment</button>
+    </form>
+</div>
