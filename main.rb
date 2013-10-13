@@ -51,43 +51,46 @@ get '/r/:category_title/index' do
   erb :category_index
 end
 
-post '/r/:category_name/new' do
+post '/r/:category_title/new' do
+  @category = Category.where(title: params[:category_title]).first
+  Submission.create(title: params[:title], params[:post_type]: params[:post], category_id: @category.id)
+  redirect "/r/#{params[:category_title]}/index"
 end
 
-get '/r/:category_name/:submission_id/comments' do
+get '/r/:category_title/:submission_id/comments' do
   @submission = Submission.find(params[:submission_id])
-  @category = Category.where(title: params[:category_name]).first
-  @category_title = params[:category_name]
+  @category = Category.where(title: params[:category_title]).first
+  @category_title = params[:category_title]
   erb :show_post.erb
 end
 
-post '/r/:category_id/:submission_id/up_vote' do
+post '/r/:category_title/:submission_id/up_vote' do
   upvoted = Submission.find(params[:submission_id])
   upvoted.up_votes += 1
   upvoted.save
   redirect '/index/'
 end
 
-post '/r/:category_id/:submission_id/down_vote' do
+post '/r/:category_title/:submission_id/down_vote' do
   downvoted = Submission.find(params[:submission_id])
   downvoted.down_votes += 1
   downvoted.save
   redirect '/index/'
 end
 
-post '/r/:category_id/:submission_id/add-comment' do
+post '/r/:category_title/:submission_id/add-comment' do
   Comment.create(author: params[:author], body: params[:body], submission_id: params[:submission_id])
-  redirect "/r/#{params[:category_id]}/#{params[:submission_id]}/comments"
+  redirect "/r/#{params[:category_title]}/#{params[:submission_id]}/comments"
 end
 
-get '/r/:category_id/:submission_id/:comment_id/edit-comment' do
+get '/r/:category_title/:submission_id/:comment_id/edit-comment' do
   @comment = Comment.find(params[:comment_id])
   erb :edit_comment
 end
 
-post '/r/:category_id/:submission_id/:comment_id/delete-comment' do
+post '/r/:category_title/:submission_id/:comment_id/delete-comment' do
   Comment.delete(params[:comment_id])
-  redirect "/r/#{params[:category_id]}/#{params[:submission_id]}/comments"
+  redirect "/r/#{params[:category_title]}/#{params[:submission_id]}/comments"
 end
 
 
