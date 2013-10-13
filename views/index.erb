@@ -3,17 +3,16 @@
  <% @submissions.each_with_index do |submission, index| %>
  <% @category_title = Category.find(submission.category_id).title %>
   <div class="post">
-  <div class="title"><%=(index+1)%>.  <a href="<%=submission.link%>"><%= submission.title %></a></div>
+  <div class="title"><%=(index+1)%>.  <a href="<%=submission.link%>"><%= submission.title %></a> posted in <a href="/r/<%= @category_title %>/index"><%= @category_title %></a></div>
 
   <div class="info">
   
   <% points = (submission.up_votes - submission.down_votes) + submission.comments.length %> <%=points%> points | created at <%=submission.created_at%> | 
   <a href="/r/<%= @category_title %>/<%= submission.id %>/comments"><%=submission.comments.length %> COMMENTS</a> | 
   <a href="/r/<%= @category_title %>/<%= submission.id %>/edit">EDIT</a> | 
-  <a href="/r/<%= @category_title %>/<%= submission.id %>/delete">DELETE</a> |
-  <a href="/r/<%= @category_title %>/<%= submission.id %>/flag">FLAG POST</a>
+  <form action="/r/<%= @category_title %>/<%= submission.id %>/delete" method="post"><button type="submit">DELETE</button></form>
   </div>
-  
+
   <div class="voting">  
     <form action="/r/<%= @category_title %>/<%= submission.id %>/up_vote" method="post">
       <button name="up_votes" type="submit" value=1>Up Vote</button>

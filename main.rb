@@ -14,10 +14,12 @@ end
 
 class Submission < ActiveRecord::Base
   has_many :comments
+  belongs_to :category
 end
 
 class Comment < ActiveRecord::Base
   has_many :subcomments
+  belongs_to :submission
 end
 
 class SubComment < Comment
@@ -44,6 +46,11 @@ get '/newest' do
   erb :index
 end
 
+get '/all-categories' do
+  @categories = Category.all
+  erb :all_categories
+end
+
 get '/r/:category_title/index' do
   @category_title = params[:category_title]
   @category = Category.where(title: params[:category_title]).first
@@ -53,15 +60,24 @@ end
 
 post '/r/:category_title/new' do
   @category = Category.where(title: params[:category_title]).first
-  Submission.create(title: params[:title], params[:post_type]: params[:post], category_id: @category.id)
+  create_params = {title: params[:title], category_id: @category.id}
+  create_params[params[:post_type]] = params[:post]
+  Submission.create(create_params)
   redirect "/r/#{params[:category_title]}/index"
 end
+
+post '/r/:category_title/delete-category' do
+  category_id = Category.where(title: params[:category_title]).first.id
+  Category.delete(category_id)
+  redirect '/all-categories'
+end
+
 
 get '/r/:category_title/:submission_id/comments' do
   @submission = Submission.find(params[:submission_id])
   @category = Category.where(title: params[:category_title]).first
   @category_title = params[:category_title]
-  erb :show_post.erb
+  erb :show_post
 end
 
 post '/r/:category_title/:submission_id/up_vote' do
@@ -84,9 +100,20 @@ post '/r/:category_title/:submission_id/add-comment' do
 end
 
 get '/r/:category_title/:submission_id/:comment_id/edit-comment' do
+  @category_title = params[:category_title]
+  @submission_id = params[:submission_id]
   @comment = Comment.find(params[:comment_id])
   erb :edit_comment
 end
+
+post '/:category_title/:submission_id/:comment_id/update-comment' do
+  comment = Comment.find(params[:comment_id])
+  comment.author = params[:author]
+  comment.body = params[:body]
+  comment.save
+  redirect "/r/#{params[:category_title]}/#{params[:submission_id]}/comments"
+end
+
 
 post '/r/:category_title/:submission_id/:comment_id/delete-comment' do
   Comment.delete(params[:comment_id])

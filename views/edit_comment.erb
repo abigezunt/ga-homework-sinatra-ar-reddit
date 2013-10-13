@@ -1,0 +1,8 @@
+<div class="add-new-post-box">
+  <h2>Edit this comment:</h2>
+    <form action="/r/<%=@category_title%>/<%= @submission_id%>/<%= @comment.id %>/update-comment" method="post">
+      <div>Your name: <input type="text" name="author" value="<%=@comment.author%>"></div>
+      <div>Your new comment: <input type="text" name="body" value="<%=@comment.body%>"></div>
+      <button type="submit">Update this comment</button>
+    </form>
+</div>
