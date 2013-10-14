@@ -76,11 +76,13 @@ post '/r/:category_title/new' do
   redirect "/r/#{params[:category_title]}/index"
 end
 
-# post '/r/:category_title/delete-category' do
-#   category_id = Category.where(title: params[:category_title]).first.id
-#   Category.delete(category_id)
-#   redirect '/all-categories'
-# end
+post '/r/:category_title/delete-category' do
+  category_id = Category.where(title: params[:category_title]).first.id
+  # Submission.where(category_id: category_id).delete_all
+  # Comment.where(category_id: category_id).delete_all
+  Category.delete(category_id)
+  redirect '/all-categories'
+end
 
 
 get '/r/:category_title/:submission_id/comments' do
@@ -90,6 +92,33 @@ get '/r/:category_title/:submission_id/comments' do
   @comments = @submission.comments.order("(up_votes - down_votes) DESC")
   erb :show_post
 end
+
+get '/r/:category_title/:submission_id/edit' do
+  @submission = Submission.find(params[:submission_id])
+  @submission_id = params[:submission_id]
+  @category_title = params[:category_title]
+  erb :edit_post
+end
+
+post '/r/:category_title/:submission_id/update' do
+  @category_title = params[:category_title]
+  @category_id = Category.where(title: params[:category_title]).first.id
+  @submission = Submission.find(params[:submission_id])
+  @submission.category_id = @category_id
+  @submission.title = params[:title]
+  @submission.author = params[:author]
+  case params[:post_type]
+  when "link"
+    @submission.link = params[:post]
+  when "body"
+    @submission.body = params[:post]
+  else
+    @submission.body = "omg cute whoa!"
+  end
+  @submission.save
+  redirect "/r/#{params[:category_title]}/index"
+end
+
 
 post '/r/:category_title/:submission_id/delete' do
   Submission.delete(params[:submission_id])

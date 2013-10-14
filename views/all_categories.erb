@@ -2,5 +2,5 @@
 <div>
 <a href="/r/<%=category.title%>/index"><%= category.title %></a>: <%=category.submissions.length%> posts
 </div>
-<!-- <form action="/r/<%= category.title %>/delete-category" method="post"><button type="submit">DELETE</button></form> -->
+<form action="/r/<%= category.title %>/delete-category" method="post"><button type="submit">DELETE</button></form>
 <% end %>
