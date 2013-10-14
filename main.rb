@@ -36,8 +36,6 @@ end
 class SubComment < Comment
 end
 
-@category_title = "Everything"
-
 get '/index/' do
   @submissions = Submission.order("(up_votes - down_votes) DESC")
   erb :index

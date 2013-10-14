@@ -1,33 +1,94 @@
-<h2><%= @category_title %></h2>
 
- <% if @submission.link %>
- <%   path = @submission.link %>
- <% elsif @submission.body %>
- <%   path = "/r/#{@category_title}/#{@submission.id}/comments" %>
- <% else %>
- <%   path = "/index/" %>
- <% end %>
+   <% @category_title = Category.find(@submission.category_id).title %>
+   <% points = ((@submission.up_votes - @submission.down_votes) + @submission.comments.length) %> 
 
-<div class= "body">
-<a href="<%=path%>"><div><h2><%=@submission.title%></h2></div></a>
-<div><p><%=@submission.body %></p></div></div>
+   
+   <% if @submission.link %>
+   <%   path = @submission.link %>
+   <% elsif @submission.body %>
+   <%   path = "/r/#{@category_title}/#{@submission.id}/comments" %>
+   <% else %>
+   <%   path = "/index/" %>
+   <% end %>
+
+  <div class="whole-post">
+  
+    <div class="voting">  
+      <form action="/r/<%= @category_title %>/<%= @submission.id %>/up_vote" method="post">
+        <input type="image" src="/images/up-grey.png" name="up_votes" value=1 alt="Up-Vote">
+      </form>
+      <div class="score"><%=points%></div>
+      <form action="/r/<%= @category_title %>/<%= @submission.id %>/down_vote" method="post">
+        <input type="image" src="/images/down-grey.png" name="down_votes" value=1 alt="Down-Vote">
+      </form>
+        </div>
+
+    <div class="post">
+
+        <div class="post-title">
+        <a href="<%=path%>"><%= @submission.title %></a></div>
+
+
+        <div class="post-info">
+          <% hours = ((Time.now - @submission.created_at) / 3600).round %>
+          <div>submitted <%= hours %> hours ago by <%= @submission.author %> to <a href="/r/<%= @category_title %>/index"><%= @category_title %></a></div>
+          <a href="/r/<%= @category_title %>/<%= @submission.id %>/comments"><%=@submission.comments.length %> comments</a> | 
+          <a href="/r/<%= @category_title %>/<%= @submission.id %>/edit">edit</a> | 
+          <form class="inline" action="/r/<%= @category_title %>/<%= @submission.id %>/delete" method="post"><button class="link" type="submit">delete</button></form>
+        </div>
+
+    </div>
+
+
+</div>
+
+<div class="top-comments">top comments</div>
+
+
+
 
 <% @comments.each do |comment| %>
-<p><%= comment.body %></p>
-<p>posted by <%= comment.author %> on <%= comment.created_at %> | 
-       <%= comment.up_votes - comment.down_votes %> points | 
-  <a href="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/edit-comment">EDIT</a> | 
-  <a href="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/add-comment">COMMENT</a> 
-  <form action="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/delete-comment" method="post"><button type="submit">DELETE</button></form> 
-    <form action="/r/<%= @category_title %>/<%= @submission.id %>/<%= comment.id %>/up_vote" method="post">
-      <button name="up_votes" type="submit" value=1>Up Vote</button>
+<% hours = ((Time.now - comment.created_at) / 3600).round %>
+  <div class="comment-box">
+    <div class="voting">    
+      <form action="/r/<%= @category_title %>/<%= @submission.id %>/<%= comment.id %>/up_vote" method="post">
+        <input type="image" src="/images/up-grey.png" name="up_votes" value=1 alt="Up-Vote">
+      </form>
+  
+      <form action="/r/<%= @category_title %>/<%= @submission.id %>/<%= comment.id %>/down_vote" method="post">
+      <input type="image" src="/images/down-grey.png" name="down_votes" value=1 alt="Down-Vote">
+      </form>
+    </div>
+  
+  <div class="inline-block">
+  <div class="post">
+    <div class="comment-author"><%= comment.author %> </div> <div class="post-info"><%= comment.up_votes - comment.down_votes %> points <%= hours %> hours ago</div>
+    <div class="comment-body"><%= comment.body %></div>
+  </div>
+  
+  
+  <div class="comment-info">  
+    <a href="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/edit-comment">edit</a> | 
+    <a href="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/add-comment">comment</a> | 
+    <form class="inline" action="/r/<%=@category_title%>/<%= @submission.id %>/<%= comment.id %>/delete-comment" method="post"><button class="link" type="submit">delete</button></form> 
+  </div>
+  </div>
+  </div>
+<% end %>
+
+
+
+
+
+  <div class="add-new-comment-box">
+    <form action="/r/<%= @category_title %>/<%= @submission.id%>/add-comment" method="post">
+      <input type="text" name="author" value="Your name">
+      <input type="text" name="body" value="Your comment">
+      <div class="right-align"><button type="submit">Submit</button></div>
     </form>
 
-    <form action="/r/<%= @category_title %>/<%= @submission.id %>/<%= comment.id %>/down_vote" method="post">
-    <button name="down_votes" type="submit" value=1>Down Vote</button>
-    </form>
-  </p>
-<% end %>
+
+<!-- 
 
 <div class="add-new-comment-box">
   <h2>Add a comment:</h2>
@@ -37,3 +98,4 @@
       <button type="submit">Add your comment</button>
     </form>
 </div>
+ -->

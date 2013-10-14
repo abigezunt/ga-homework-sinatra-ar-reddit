@@ -1,48 +1,67 @@
+
+
+
+
+ <% @submissions.each_with_index do |submission, index| %>
+
+   <% @category_title = Category.find(submission.category_id).title %>
+   <% points = ((submission.up_votes - submission.down_votes) + submission.comments.length) %> 
+
+   
+   <% if submission.link %>
+   <%   path = submission.link %>
+   <% elsif submission.body %>
+   <%   path = "/r/#{@category_title}/#{submission.id}/comments" %>
+   <% else %>
+   <%   path = "/index/" %>
+   <% end %>
+
+  <div class="whole-post">
+    
+    <div class="index-number"><%=(index+1)%>.</div>
+  
+    <div class="voting">  
+      <form action="/r/<%= @category_title %>/<%= submission.id %>/up_vote" method="post">
+        <input type="image" src="/images/up-grey.png" name="up_votes" value=1 alt="Up-Vote">
+      </form>
+      <div class="score"><%=points%></div>
+      <form action="/r/<%= @category_title %>/<%= submission.id %>/down_vote" method="post">
+        <input type="image" src="/images/down-grey.png" name="down_votes" value=1 alt="Down-Vote">
+      </form>
+        </div>
+
+    <div class="post">
+
+        <div class="post-title">
+        <a href="<%=path%>"><%= submission.title %></a></div>
+
+
+        <div class="post-info">
+          <% hours = ((Time.now - submission.created_at) / 3600).round %>
+          <div>submitted <%= hours %> hours ago by <%= submission.author %> to <a href="/r/<%= @category_title %>/index"><%= @category_title %></a></div>
+          <a href="/r/<%= @category_title %>/<%= submission.id %>/comments"><%=submission.comments.length %> comments</a> | 
+          <a href="/r/<%= @category_title %>/<%= submission.id %>/edit">edit</a> | 
+          <form class="inline" action="/r/<%= @category_title %>/<%= submission.id %>/delete" method="post"><button class="link" type="submit">delete</button></form>
+        </div>
+
+    </div>
+
+
+</div>
+
+<% end %>
+
+
+
 <div class="add-new-post-box">
-  <h2>Create a new post:</h2>
     <form action="/r/<%=@category_title%>/new" method="post">
-      Title: <input type="text" name="title">
+      <input type="text" name="title" value="Your Post Title">
       <select name="post_type">
       <option value="link">URL</option>
       <option value="body">Text</option>
       </select>
-      Your post:<input type="text" name="post">
+      <input type="text" name="post" value="URL or Text">
       <button type="submit">Submit</button>
     </form>
 </div>
 
-
- <% @submissions.each_with_index do |submission, index| %>
- <% @category_title = Category.find(submission.category_id).title %>
- 
- <% if submission.link %>
- <%   path = submission.link %>
- <% elsif submission.body %>
- <%   path = "/r/#{@category_title}/#{submission.id}/comments" %>
- <% else %>
- <%   path = "/index/" %>
- <% end %>
-
-  <div class="post">
-  <div class="title"><%=(index+1)%>.  <a href="<%=path%>"><%= submission.title %></a></div>
-
-  <div class="info">
-  
-  <% points = ((submission.up_votes - submission.down_votes) + submission.comments.length) %> <%=points%> points | created at <%=submission.created_at%> | 
-  <a href="/r/<%= @category_title %>/<%= submission.id %>/comments"><%=submission.comments.length %> COMMENTS</a> | 
-  <a href="/r/<%= @category_title %>/<%= submission.id %>/edit">EDIT</a> | 
-  <form action="/r/<%= @category_title %>/<%= submission.id %>/delete" method="post"><button type="submit">DELETE</button></form>
-  </div>
-  
-  <div class="voting">  
-    <form action="/r/<%= @category_title %>/<%= submission.id %>/up_vote" method="post">
-      <button name="up_votes" type="submit" value=1>Up Vote</button>
-    </form>
-
-    <form action="/r/<%= @category_title %>/<%= submission.id %>/down_vote" method="post">
-    <button name="down_votes" type="submit" value=1>Down Vote</button>
-    </form>
-  </div>
-</div>
-
-<% end %>

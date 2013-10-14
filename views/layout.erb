@@ -7,8 +7,15 @@
 </head>
 <body>
 
+<% @categories = Category.all %>
+<div id="categories-header-box">
+  <% @categories.each do |category| %>
+    <div class="inline"><a href="/r/<%=category.title%>/index"><%= category.title.upcase %></a> - </div>
+  <% end %>
+</div>
+
  <div class="header-box">
-   <a href="/index/">Discuss Everything about <%=@category_title%></a> |
+   <a href="/index/">Discuss Everything</a> |
    <a href="/new">create a new category</a> | 
    <a href="/newest">read all the newest posts</a> |
    <a href="/all-categories">see all categories</a>

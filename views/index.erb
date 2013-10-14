@@ -31,20 +31,19 @@
     <div class="post">
 
         <div class="post-title">
-        <a href="<%=path%>"><%= submission.title %></a> posted in <a href="/r/<%= @category_title %>/index"><%= @category_title %></a></div>
+        <a href="<%=path%>"><%= submission.title %></a></div>
 
 
         <div class="post-info">
-          <% hours_old = ((Time.now - submission.created_at) / 3600).round %>
-          <div>submitted <%= hours_old %> hours ago by <%= submission.author %></div>
+          <% hours = ((Time.now - submission.created_at) / 3600).round %>
+          <div>submitted <%= hours %> hours ago by <%= submission.author %> to <a href="/r/<%= @category_title %>/index"><%= @category_title %></a></div>
           <a href="/r/<%= @category_title %>/<%= submission.id %>/comments"><%=submission.comments.length %> comments</a> | 
           <a href="/r/<%= @category_title %>/<%= submission.id %>/edit">edit</a> | 
-          <form class="inline" action="/r/<%= @category_title %>/<%= submission.id %>/delete" method="post"><button type="submit">delete</button></form>
+          <form class="inline" action="/r/<%= @category_title %>/<%= submission.id %>/delete" method="post"><button class="link" type="submit">delete</button></form>
         </div>
 
     </div>
 
-
 </div>
-
 <% end %>
+
