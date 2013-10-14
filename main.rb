@@ -10,16 +10,39 @@ set :database, {adapter: 'postgresql',
 
 class Category < ActiveRecord::Base
   has_many :submissions
+  # unsure why not working. Might be a rails-only thing with ActiveSupport???
+  # before_destroy :delete_submissions
+
+  # def delete_submissions
+  #   binding.pry
+  #   self.submissions.delete_all
+  # end
+
 end
 
 class Submission < ActiveRecord::Base
   has_many :comments
   belongs_to :category
+
+  def rank
+    g = 0.8
+    p = self.up_votes - self.down_votes
+    t = (Time.now - self.created_at) / 3600
+    score = (p -1) / (t + 2 ) ** g
+  end
 end
 
 class Comment < ActiveRecord::Base
   has_many :subcomments
   belongs_to :submission
+
+  def rank
+    g = 0.8
+    p = self.up_votes - self.down_votes
+    t = (Time.now - self.created_at) / 3600
+    score = (p -1) / (t + 2 ) ** g
+  end
+
 
   # def print_subcomments
   #   subcomments = Comment.where(comment_id: self.id)
@@ -36,8 +59,17 @@ end
 class SubComment < Comment
 end
 
+class Array
+  def gravity_rank
+    sorted_array = self.sort_by do |x|
+      x.rank
+    end
+    sorted_array.reverse!
+  end
+end
+
 get '/index/' do
-  @submissions = Submission.order("(up_votes - down_votes) DESC")
+  @submissions = Submission.all.to_a.gravity_rank
   erb :index
 end
 
@@ -63,7 +95,7 @@ end
 get '/r/:category_title/index' do
   @category_title = params[:category_title]
   @category = Category.where(title: params[:category_title]).first
-  @submissions = @category.submissions.order("(up_votes - down_votes) DESC")
+  @submissions = @category.submissions.all.to_a.gravity_rank
   erb :category_index
 end
 
@@ -90,8 +122,6 @@ end
 
 post '/r/:category_title/delete-category' do
   category_id = Category.where(title: params[:category_title]).first.id
-  # Submission.where(category_id: category_id).delete_all
-  # Comment.where(category_id: category_id).delete_all
   Category.delete(category_id)
   redirect '/all-categories'
 end
