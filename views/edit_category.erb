@@ -1,0 +1,7 @@
+<div class="add-new-post-box">
+  <h2>Edit this category:</h2>
+    <form action="/r/<%=@category.title%>/update-category" method="post">
+      <div><input type="text" name="title" value="<%=@category.title%>"></div>
+      <button type="submit">Update this category</button>
+    </form>
+</div>

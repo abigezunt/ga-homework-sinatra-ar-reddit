@@ -76,6 +76,18 @@ post '/r/:category_title/new' do
   redirect "/r/#{params[:category_title]}/index"
 end
 
+get '/r/:category_title/edit-category' do
+  @category = Category.where(title: params[:category_title]).first
+  erb :edit_category
+end
+
+post '/r/:category_title/update-category' do
+  @category = Category.where(title: params[:category_title]).first
+  @category.title = params[:title]
+  @category.save
+  redirect "/r/#{params[:title]}/index"
+end
+
 post '/r/:category_title/delete-category' do
   category_id = Category.where(title: params[:category_title]).first.id
   # Submission.where(category_id: category_id).delete_all
