@@ -6,8 +6,9 @@ require 'sinatra/activerecord'
 
 set :database, {adapter: 'postgresql',
 				database: 'reddit',
-				host: 'localhost'}
+				host: }
 
+# models are classes for rails
 class Category < ActiveRecord::Base
   has_many :submissions
   # unsure why not working. Might be a rails-only thing with ActiveSupport???
