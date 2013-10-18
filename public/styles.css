@@ -166,11 +166,6 @@ button:hover.link {
 	background-color: #f1f1f1;
 }
 
-.add-new-comment-box, .add-new-post-box h2 {
-	font-size: 12px;
-	color: black;
-	padding: 5px;
-}
 
 .add-new-comment-box, .add-new-post-box button {
 	padding: 5px;

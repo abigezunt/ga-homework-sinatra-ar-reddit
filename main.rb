@@ -5,8 +5,7 @@ require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 
 set :database, {adapter: 'postgresql',
-				database: 'reddit',
-				host: }
+				database: 'reddit'}
 
 # models are classes for rails
 class Category < ActiveRecord::Base
