@@ -11,14 +11,6 @@ set :database, {adapter: 'postgresql',
 # models are classes for rails
 class Category < ActiveRecord::Base
   has_many :submissions
-  # unsure why not working. Might be a rails-only thing with ActiveSupport???
-  # before_destroy :delete_submissions
-
-  # def delete_submissions
-  #   binding.pry
-  #   self.submissions.delete_all
-  # end
-
 end
 
 class Submission < ActiveRecord::Base
@@ -62,9 +54,7 @@ end
 
 class Array
   def gravity_rank
-    sorted_array = self.sort_by do |x|
-      x.rank
-    end
+    sorted_array = self.sort_by { |x| x.rank }
     sorted_array.reverse!
   end
 end
@@ -121,11 +111,11 @@ post '/r/:category_title/update-category' do
   redirect "/r/#{params[:title]}/index"
 end
 
-post '/r/:category_title/delete-category' do
-  category_id = Category.where(title: params[:category_title]).first.id
-  Category.delete(category_id)
-  redirect '/all-categories'
-end
+# post '/r/:category_title/delete-category' do
+#   category_id = Category.where(title: params[:category_title]).first.id
+#   Category.delete(category_id)
+#   redirect '/all-categories'
+# end
 
 
 get '/r/:category_title/:submission_id/comments' do
