@@ -25,8 +25,11 @@ GEM
       i18n (~> 0.5)
     i18n (0.6.5)
     method_source (0.8.2)
+    mini_portile (0.5.2)
     minitest (4.7.5)
     multi_json (1.8.1)
+    nokogiri (1.6.0)
+      mini_portile (~> 0.5.0)
     pg (0.17.0)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
@@ -66,6 +69,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   faker
+  nokogiri
   pg
   pry
   rake

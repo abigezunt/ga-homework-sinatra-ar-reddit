@@ -10,11 +10,7 @@ enable :static
 
 set :database, {adapter: 'postgresql',
                 host:  'localhost',
-                database: 'db6inj8ia53ubs',
-                user:  'ffewqpdwxshbse',
-                port:  5432,
-                password: 'FRcNPdWjsRTHdWosvNRpWR30em' }
-
+                database: 'ga-reddit'}
 
 # models are classes for rails
 class Category < ActiveRecord::Base
