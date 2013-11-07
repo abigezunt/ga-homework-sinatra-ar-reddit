@@ -1,14 +1,6 @@
-require 'faker'
+
 require_relative 'main'
 
-Comment.delete_all
-Submission.delete_all
-
-10.times do |i|
-  submission = Submission.create(:title => Faker::Lorem.sentence(1), :link => Faker::Internet.url, :body => Faker::Lorem.paragraphs(i).join("\n"))
-
-  i.times do |comment_count|
-    submission.comments << Comment.new(:author => Faker::Name.name, :body => Faker::Lorem.paragraphs(comment_count).join("\n"))
-  end
-end
-
+Submission.create(title: "Got your Finger!", link: "http://i.imgur.com/Apz5poI.jpg")
+Submission.create(title: "How tenacity, a wall saved a Japanese nuclear plant from meltdown after tsunami", link: "http://www.oregonlive.com/opinion/index.ssf/2012/08/how_tenacity_a_wall_saved_a_ja.html")
+Submission.create(title: "McDonalds Wants To Start 3D Printing Happy Meal Toys For Unhappy Kids", link: "http://www.businessinsider.com/mcdonalds-wants-3d-printers-2013-11")

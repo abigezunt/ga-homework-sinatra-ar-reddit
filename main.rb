@@ -4,8 +4,12 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'sinatra/activerecord'
 
+set :server, 'webrick'
+set :public_folder, 'public'
+enable :static
+
 set :database, {adapter: 'postgresql',
-                host:  'ec2-54-235-102-202.compute-1.amazonaws.com',
+                host:  'localhost',
                 database: 'db6inj8ia53ubs',
                 user:  'ffewqpdwxshbse',
                 port:  5432,
